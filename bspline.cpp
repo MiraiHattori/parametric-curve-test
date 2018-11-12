@@ -13,11 +13,10 @@ int main()
     std::random_device rnd;
     std::mt19937 mt(rnd());
     std::uniform_real_distribution<> rand(0.0, 1.0);
-    /*
     for (int i = 0; i < id_max; i++) {
         gain[i] = 2.0 * rand(mt) - 1.0;
     }
-    */
     a.varifyCalcDelta(gain);
+    std::cout << a.calcDeltaMatrixForKeepRecursiveOrder(1) << std::endl;
     return 0;
 }

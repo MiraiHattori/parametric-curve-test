@@ -276,15 +276,16 @@
   ;;(send C :get-val 'dim0) (send C :get-val 'dim1))
   (cond
    ((and A B)
+    (setq cnt 0)
     (dotimes (i (send B :get-val 'dim1))
-      (cond
+      (cond ;; this means if
        ((find i col-list)
         (dotimes (x (send A :get-val 'dim0))
           (dotimes (j M)
             (dotimes (y (send A :get-val 'dim1))
-              (setf (aref C (+ x0 x) (+ y0 y (* (send A :get-val 'dim1) j)))
+              (incf cnt)(setf (aref C (+ x0 x) (+ y0 y (* (send A :get-val 'dim1) j)))
                     (* (aref A x y) (aref B j i))))))
-        (setq x0 (+ x0 (send A :get-val 'dim0)))))))
+        (setq x0 (+ x0 (send A :get-val 'dim0))))))) ;; this is also called when cond is true
 
    (t
     (dotimes (i M)
@@ -297,7 +298,6 @@
         (setq x0 (+ x0 (send A :get-val 'dim0)))))
 
       (setq y0 (+ y0 (send A :get-val 'dim1))))))
-
   C)
 
 ;; }}}
@@ -568,7 +568,6 @@
    (setq bspline-element-list nil)
    (while (>= (decf j) 0)
      ;; if (id: id) sentence is in args, (:id j) will be ignored.
-     (format t "basic spline ~A~%" args)
      (push (instance* basic-spline-element :init (append (list :id j) args))
            bspline-element-list))
    self)
@@ -747,8 +746,11 @@
    ;;                    #'(lambda (cm) (matrix-row cm i))
    ;;                    coeff-matrix))
    ;;      A))
+
+   ;; A matrix size and coeff-matrix size does not match??
    (setq A (make-matrix id-max (* (+ recursive-order 1) id-max)
                         (send-all coeff-matrix :get-val 'entity))) ;; method entity flattens the matrix into array
+
    ;; (print A)
    (setq AD (make-matrix id-max (* (+ recursive-order 1) id-max)
                          (send-all (mapcar #'(lambda (m) (m* m Dn)) coeff-matrix)

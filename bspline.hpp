@@ -117,17 +117,18 @@ hrp::dmatrix calcMatrixLinearEquationCoeffMatrix(
     hrp::dmatrix c = hrp::dmatrix::Zero(right_matrix.cols() * left_matrix.rows(), col * row);
     int x0 = 0;
     int y0 = 0;
+    int cnt = 0;
     for (int i = 0; i < right_matrix.cols(); i++) {
         if (std::find(col_list.begin(), col_list.end(), i) != col_list.end()) {
             for (int x = 0; x < left_matrix.rows(); x++) {
                 for (int j = 0; j < col; j++) {
                     for (int y = 0; y < left_matrix.cols(); y++) {
+                        cnt++;
                         c(x0 + x, y0 + y + left_matrix.cols() * j)
                             = left_matrix(x, y) * right_matrix(j, i);
                     }
                 }
             }
-        } else {
             x0 += left_matrix.rows();
         }
     }
@@ -137,7 +138,7 @@ hrp::dmatrix calcMatrixLinearEquationCoeffMatrix(
 
 // {{{ solveMatrixLinearEquation
 // A[p0,...,pM-1]B = C[P0;...;pM-1] = D => return P
-hrp::dvector solveMatrixLinearEquation(
+hrp::dmatrix solveMatrixLinearEquation(
         const hrp::dmatrix& left_matrix, const hrp::dmatrix& right_matrix,
         const int& col, const int& row, const hrp::dmatrix& answer_matrix)
 {
@@ -289,7 +290,7 @@ public:
   {
     t_step_ = (t_max_ - t_min_) / (id_max_ - recursive_order_);
     bspline_elements_.clear();
-    for (int i = id_ - 1; i >= 0; i--) {
+    for (int i = 0; i < id_; i++) {
         bspline_elements_.push_back(BSplineElement(recursive_order_, recursive_cnt_, i, id_max_, t_min_, t_max_));
     }
   }
@@ -335,7 +336,7 @@ public:
   {
       hrp::dvector ret = hrp::dvector::Zero(id_);
       for (int i = 0; i < id_; i++) {
-          ret[0] = bspline_elements_.at(i).calc(t);
+          ret[i] = bspline_elements_.at(i).calc(t);
       }
       return ret;
   }
@@ -437,13 +438,17 @@ public:
       for (size_t i = 0; i < coeff_matrices.size(); i++) {
           hrp::dmatrix tmp = coeff_matrices.at(i);
           tmp.transposeInPlace(); // distructive transpose
-          a.row(i) = Eigen::Map<hrp::dvector>(tmp.data(), tmp.cols() * tmp.rows());;
+#warning size does not match, so fill the rest with 0s
+          int size = tmp.cols() * tmp.rows();
+          a.row(i).block(0, 0, 1, size) = Eigen::Map<hrp::dvector>(tmp.data(), size).transpose();
       }
       hrp::dmatrix ad = hrp::dmatrix::Zero(id_max_, (recursive_order_ + 1) * id_max_);
       for (size_t i = 0; i < coeff_matrices.size(); i++) {
           hrp::dmatrix tmp = coeff_matrices.at(i) * d_n;
           tmp.transposeInPlace(); // distructive transpose
-          a.row(i) = Eigen::Map<hrp::dvector>(tmp.data(), tmp.cols() * tmp.rows());;
+#warning size does not match, so fill the rest with 0s
+          int size = tmp.cols() * tmp.rows();
+          ad.row(i).block(0, 0, 1, size) = Eigen::Map<hrp::dvector>(tmp.data(), size).transpose();
       }
       hrp::dmatrix ret = solveMatrixLinearEquation(
               hrp::dmatrix::Identity(id_max_, id_max_), a, id_max_, id_max_, ad);
@@ -552,7 +557,7 @@ public:
           double diff = (f - prev_f) / t_step;
           std::cerr << "t: " << t_buf << " delta: " << delta << " diff: " << diff
               << " delta-diff: " << delta - diff << std::endl;
-          if (std::abs(delta - diff) < 100.0 / split_cnt) {
+          if (std::abs(delta - diff) >= 100.0 / split_cnt) {
               ok = false;
           }
       }

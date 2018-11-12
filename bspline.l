@@ -467,9 +467,7 @@
    (setq x-cnt (+ x-min (* 0.5 x-step)))
    ;;
    (setq coeff-matrix nil)
-   (print "while")
    (while (<= x-cnt x-max)
-   (print x-cnt)
      (push (apply #'calc-bspline-coeff-vector
                   (append (list x-cnt) args))
            coeff-matrix)
@@ -477,9 +475,6 @@
    (setq coeff-matrix (make-matrix (setq row-max (length coeff-matrix))
                                    (setq col-max (length (car coeff-matrix)))
                                    (reverse coeff-matrix)))
-   (print "init")
-   (print args)
-   (print coeff-matrix)
    ;;
    self)
   (:coeff-vector

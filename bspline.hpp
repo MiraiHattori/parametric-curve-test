@@ -213,10 +213,8 @@ public:
     t_step_ = (t_max_ - t_min_) * 1.0 / (id_max_ - recursive_order_);
     double t_cnt = t_min_ + t_step_ / 2.0;
     coeff_matrix_ = hrp::dmatrix::Zero(0, recursive_cnt_ + 1);
-    std::cout << "while" << std::endl;
     while (t_cnt <= t_max_)
     {
-    std::cout << t_cnt << std::endl;
       // updating coeff matrix
       hrp::dmatrix updated_coeff_matrix = hrp::dmatrix::Zero(coeff_matrix_.rows() + 1, coeff_matrix_.cols());
       for (int i = 0; i < coeff_matrix_.rows() + 1; i++)
@@ -233,9 +231,6 @@ public:
       coeff_matrix_ = updated_coeff_matrix;
       t_cnt += t_step_;
     }
-    std::cout << "init" << std::endl;
-    std::cout << "id: " << id << " recursive_order: " << recursive_order << " id_max: " << id_max << std::endl;
-    std::cout << coeff_matrix_ << std::endl;
   }
   // }}}
 

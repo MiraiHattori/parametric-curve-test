@@ -565,6 +565,13 @@ public:
   }
   // }}}
 
+  // {{{ recursiveOrder getter
+  const int& recursiveOrder() const
+  {
+      return recursive_order_;
+  }
+  // }}}
+
 private:
 
   // {{{ discreteDeltaMatrixImpl

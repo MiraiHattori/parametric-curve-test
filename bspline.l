@@ -888,11 +888,9 @@
 ;; }}}
 
 
-;; (setq a (instance basic-spline :init :id-max 8 :recursive-order 3))
-;; (send a :varify-calc-delta)
-;; (send a :calc-delta-matrix-for-keep-recursive-order :debug? t)
-
-#|
+(setq a (instance basic-spline :init :id-max 8 :recursive-order 3))
+(send a :varify-calc-delta)
+(send a :calc-delta-matrix-for-keep-recursive-order :debug? t)
 
 (setq a (instance basic-spline :init :id-max 8 :recursive-order 3))
 (let* ((tm (random 1.0))
@@ -913,4 +911,4 @@
   (print (transform D^n x))
   (format t "~A - ~A = ~A(~A)~%"
           ref-dcv dcv (v- ref-dcv dcv) (norm (v- ref-dcv dcv)))
-  (norm (v- ref-dcv dcv)))
+  (print (norm (v- ref-dcv dcv))))

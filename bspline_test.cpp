@@ -37,5 +37,6 @@ int main()
     std::cout << d_n * t << std::endl;
     std::cout << ref_dcv.transpose() << " - " <<  dcv.transpose() << " = " << (ref_dcv - dcv).transpose() << "(" << (ref_dcv - dcv).norm() << ")" << std::endl;
     std::cout << (ref_dcv - dcv).norm() << std::endl;
+
     return 0;
 }

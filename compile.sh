@@ -12,4 +12,4 @@ if [ $# -ne 1 ]; then
 fi
 
 # g++-7 -std=c++14 -I$HOME/.future731/include/ -L${HOME}/.future731/lib -o main $1 -I/usr/include/eigen3
-g++ -std=c++11 -o main $1 -isystem /usr/include/eigen3
+g++ -std=c++11 -o main $1 -isystem /usr/include/eigen3 -I /opt/ros/kinetic/include -L /opt/ros/kinetic/lib -l qpOASES -I ./3rdparty

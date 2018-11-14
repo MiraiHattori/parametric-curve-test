@@ -486,7 +486,7 @@ public:
       tmp.transposeInPlace();  // distructive transpose
 #warning size does not match, so fill the rest with 0s
       int size = tmp.cols() * tmp.rows();
-      a.row(i).block(0, 0, 1, size) = Eigen::Map<hrp::dvector>(tmp.data(), size).transpose();
+      a.row(i).segment(0, size) = Eigen::Map<hrp::dvector>(tmp.data(), size).transpose();
     }
     hrp::dmatrix ad = hrp::dmatrix::Zero(id_max_, (recursive_order_ + 1) * id_max_);
     for (size_t i = 0; i < coeff_matrices.size(); i++)
@@ -495,7 +495,7 @@ public:
       tmp.transposeInPlace();  // distructive transpose
 #warning size does not match, so fill the rest with 0s
       int size = tmp.cols() * tmp.rows();
-      ad.row(i).block(0, 0, 1, size) = Eigen::Map<hrp::dvector>(tmp.data(), size).transpose();
+      ad.row(i).segment(0, size) = Eigen::Map<hrp::dvector>(tmp.data(), size).transpose();
     }
     hrp::dmatrix ret = solveMatrixLinearEquation(
         hrp::dmatrix::Identity(id_max_, id_max_), a, id_max_, id_max_, ad);

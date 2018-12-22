@@ -1,4 +1,5 @@
 #include "3rdparty/eiquadprog.hpp"
+#include <limits>
 #include <iostream>
 
 /*
@@ -8,20 +9,19 @@
  */
 int main()
 {
-
   /* Setup data of QP. */
   Eigen::MatrixXd G(2, 2);
-  G << 4.0, 1.0, 1.0, 2.0; // 正定値ヘッセ行列
-  Eigen::VectorXd g0(2); // 勾配ベクトル(?)
+  G << 4.0, 1.0, 1.0, 2.0;  // 正定値ヘッセ行列
+  Eigen::VectorXd g0(2);    // 勾配ベクトル(?)
   g0 << 1.0, 1.0;
-  Eigen::MatrixXd CE(2, 1); // constraint matrix
+  Eigen::MatrixXd CE(2, 1);  // constraint matrix
   CE << 1.0, 1.0;
-  Eigen::VectorXd ce0(1); // 等式
+  Eigen::VectorXd ce0(1);  // 等式
   ce0 << -1.0;
   // dummies
-  Eigen::MatrixXd CI(2, 1); // constraint matrix
+  Eigen::MatrixXd CI(2, 1);  // constraint matrix
   CI << 1.0, 1.0;
-  Eigen::VectorXd ci0(1); // 等式
+  Eigen::VectorXd ci0(1);  // 不等式
   ci0 << 1.0;
 
   Eigen::VectorXd x(2);

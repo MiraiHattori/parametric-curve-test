@@ -17,22 +17,30 @@ def calc_bspline_base(x, j, N, _n, M, x_max, x_min):
         return ((x - xj) * calc_bspline_base(x, j, N, _n - 1, M, x_max, x_min) + \
                (xj_n_1 - x) * calc_bspline_base(x, j + 1, N, _n - 1, M, x_max, x_min)) / (_n * h)
 
-fig, ax = plt.subplots()
-xx = np.linspace(-1, 8, 100)
 
-N = 2
-M = 5
-x_max = 5
+N = 3
+M = 14
+x_max = 1
 x_min = 0
 
 h = (x_max - x_min) * 1.0 / (M - N)
+c = [1.0] * M
 
-c = [1.0, 1.0, 1.0]
-ax.plot(xx, [calc_bspline(x, 0, N, M, x_max, x_min) * c[0] for x in xx], '-', lw=2, label='bspline-base-0')
-ax.plot(xx, [calc_bspline(x, 1, N, M, x_max, x_min) * c[1] for x in xx], '-', lw=2, label='bspline-base-1')
-ax.plot(xx, [calc_bspline(x, 2, N, M, x_max, x_min) * c[2] for x in xx], '-', lw=2, label='bspline-base-2')
-ax.plot(x_min - h / 2.0, c[0], '.')
-ax.plot(x_min + 1.0 * h / 2.0, c[1], '.')
-ax.plot(x_min + 3.0 * h / 2.0, c[2], '.')
+fig, ax = plt.subplots()
+xx = np.linspace(x_min - h * 2, x_max + h * 2, 999)
+
+for i in range(M):
+    ax.plot(xx, [calc_bspline(x, i, N, M, x_max, x_min) * c[i] for x in xx], '-', lw=2, label='bspline-base-'+str(i))
+
+sum_bsp = []
+for x in xx:
+    s = 0.0
+    for i in range(M):
+        s += calc_bspline(x, i, N, M, x_max, x_min)
+    sum_bsp.append(s)
+ax.plot(xx, sum_bsp, '-', lw=2, label='bspline-base-'+str(i))
+#ax.plot(x_min - h / 2.0, c[0], '.')
+#ax.plot(x_min + 1.0 * h / 2.0, c[1], '.')
+#ax.plot(x_min + 3.0 * h / 2.0, c[2], '.')
 ax.legend(loc='best')
 plt.show()

@@ -136,7 +136,7 @@ ci1 << 3.65888,5.23726,4.35329,8,8,5.65746,3.56704,3.67518,4.02428,3.96818,3.989
     std::cout << "ci1: " << ci1.transpose() << std::endl;
     for (int i = 0; i < ci1.size(); i++) {
         if ((CI1 * ans)[i] > ci1[i] or (CI1 * ans)[i] < -ci1[i]) {
-            std::cerr << "######################3error" << std::endl;
+            std::cerr << "######################error" << std::endl;
         }
     }
     }

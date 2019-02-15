@@ -1,3 +1,6 @@
 [submodule "3rdparty/osqp"]
 	path = 3rdparty/osqp
 	url = https://github.com/oxfordcontrol/osqp
+[submodule "3rdparty/osqp-eigen"]
+	path = 3rdparty/osqp-eigen
+	url = https://github.com/robotology/osqp-eigen.git

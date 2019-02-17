@@ -1,4 +1,4 @@
-#include "3rdparty/eiquadprog_test.hpp"
+#include "eiquadprog_test.hpp"
 #include <limits>
 #include <iostream>
 
@@ -111,12 +111,11 @@ int main()
     Eigen::VectorXd ans(12);
     std::cout << std::endl;
 
-    for (int i = 0; i <= 5; i++) {
-        Eigen::VectorXd ci = ci0.segment(0, 12 + 12 + 11 + i);
-        Eigen::MatrixXd CI = CI0.block(0, 0, 12 + 12 + 11 + i, 12);
-        std::cout << "opt: " << Eigen::solve_quadprog(G, g0, CE0.transpose(), ce0, CI.transpose(), ci, ans) << std::endl;
-        std::cout << ans.transpose() << std::endl;
-        std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - start).count() << std::endl;
+    Eigen::VectorXd ci = ci0.segment(0, 12 + 12 + 11 + 11);
+    Eigen::MatrixXd CI = CI0.block(0, 0, 12 + 12 + 11 + 11, 12);
+    std::cout << "opt: " << Eigen::solve_quadprog(G, g0, CE0.transpose(), ce0, CI.transpose(), ci, ans) << std::endl;
+    std::cout << ans.transpose() << std::endl;
+    std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - start).count() << std::endl;
     Eigen::MatrixXd CI1(11, 12);
     CI1 <<
 9,-9,-0,-0,-0,-0,-0,-0,-0,-0,-0,-0,
@@ -134,12 +133,6 @@ int main()
 ci1 << 3.65888,5.23726,4.35329,8,8,5.65746,3.56704,3.67518,4.02428,3.96818,3.98973;
     std::cout << "CI1*ans: " << (CI1 * ans).transpose() << std::endl;
     std::cout << "ci1: " << ci1.transpose() << std::endl;
-    for (int i = 0; i < ci1.size(); i++) {
-        if ((CI1 * ans)[i] > ci1[i] or (CI1 * ans)[i] < -ci1[i]) {
-            std::cerr << "######################error" << std::endl;
-        }
-    }
-    }
 
   return 0;
 }

@@ -66,7 +66,7 @@ double solve_qp(
   Eigen::MatrixXd A_Eigen(eq_size + ieq_size, x_size);
   A_Eigen << equality_matrix, inequality_matrix;
   real_t* A = A_shptr.get();
-  setUpQPParam(A, A*_Eigen);
+  setUpQPParam(A, A_Eigen);
 
   boost::shared_ptr<real_t> lb_shptr(new real_t[x_size]);
   real_t* lb = lb_shptr.get();

@@ -7,6 +7,7 @@
 #include <boost/shared_ptr.hpp>
 #include <cmath>
 #include <iostream>
+#include <numeric>
 #include <vector>
 
 namespace hrp
@@ -385,6 +386,7 @@ public:
     {
       ret.row(i) = this->calcCoeffVector(via_t_list.at(i));
     }
+    return ret;
   }
   // }}}
 

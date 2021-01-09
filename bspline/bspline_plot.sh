@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-./compile.sh bspline_plot.cpp
+g++ -std=c++14 "$(pkg-config --cflags eigen3)" -o main bspline_plot.cpp
 
 ./main > log
 for i in `seq 0 7`
